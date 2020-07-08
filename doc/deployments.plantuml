@@ -1,0 +1,27 @@
+@startuml
+
+node "User's Personal Computer|Tablet| ..." as UserPC {
+    component "HTML 5 Web Browser"
+}
+
+node "Public Webserver" as WebServer{
+ component "Browser Web Application" as BrowserApp<<Client Side JavaScript>>
+}
+
+cloud "Google Cloud Services" as Google {
+ component "Google OAuth 2.0" as OAuth
+ component "Google Drive" as Drive {
+  file wormnav.file
+ }
+}
+
+cloud "Anywhere from local disk or web" as anywhere {
+    file gpx.file
+}
+
+
+UserPC .up.> WebServer
+UserPC .down.> Google
+UserPC .down.> anywhere
+
+@enduml

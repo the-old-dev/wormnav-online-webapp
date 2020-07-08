@@ -1,0 +1,127 @@
+@startuml
+
+skinparam monochrome true
+
+(*) -right-> "
+{{
+salt
+{# 
+ <size:32><&key></size>
+ .
+ <size:32><color:grey><&brush></color></size>
+ ..
+ <size:32><color:grey><&location></color></size>
+ .
+ <size:32><color:grey><&flag></color></size>
+ .
+ <size:32><color:grey><&arrow-circle-left></color></size>
+}
+}} 
+" as menu
+
+menu -right-> "
+{{
+salt
+{# 
+  <size:32><&key></size> | **Google**
+ ... | [ Login ]
+}
+}} 
+" as google
+
+google -right-> [Login\nsuccessfull] "
+{{
+salt
+{# 
+ <size:32><&key></size>
+ .
+ <size:32><color:grey><&brush></color></size>
+ ..
+ <size:32><&location></size>
+ .
+ <size:32><&flag></size>
+ .
+ <size:32><&arrow-circle-left></size>
+}
+}} 
+" as menuActive
+
+menuActive -right-> "
+{{
+salt
+{# 
+ <size:32><&arrow-circle-left></size> | **Import Track**
+ ... | {+
+  Garmin | "track.id" | [ Import from id  ]
+  URL | "track.url" | [ Import from URL ]
+   . | File  | [ import from File]
+ }
+}
+}} 
+" as import
+
+import --> [track imported] "
+{{
+salt
+{# 
+  <size:32><&flag></size> | **Tracks**
+ ... | {+
+  () | Track #0
+  (X) | Track #1
+  () | Track #2
+  [Delete] | [ Create Navigation]
+ }
+}
+}} 
+" as tracks
+
+tracks -left-> [Create\n Navigation] "
+{{
+salt
+{# 
+ <size:32><&location></size> | **Navigations**
+ ... | {+
+  ...| <b>Name</b> | <b>Is active</b>
+  () | Navigation #0 |[] No
+  (X) | Navigation #1|[] No
+  () | Navigation #2|[X] Yes
+  [Edit] | [Delete]
+ }
+}
+}} 
+" as navigations
+
+navigations -left-> [Edit\n clicked] "
+{{
+salt
+{# 
+ <size:32><&key></size>
+ .
+ <size:32><&brush></size>
+ ..
+ <size:32><&location></size>
+ .
+ <size:32><&flag></size>
+ .
+ <size:32><&arrow-circle-left></size>
+}
+}} 
+" as edit
+
+edit -left-> "
+{{
+salt
+{# 
+ <size:32><&brush></size> | **Current**
+ ... | {+
+  Name | "navigation #1"
+  Active | [] No
+  ... | [ Save ]
+ }
+}
+}} 
+" as current
+
+current -up-> (*)
+
+@enduml

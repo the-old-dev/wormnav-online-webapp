@@ -1,0 +1,37 @@
+@startuml
+
+package "wormnav-online-webapp" {
+ component "Browser Web Application" as BrowserApp<<leaflet-application>>
+ component leaflet<<JavaScript Library, Extendable>>
+ interface Plugin
+ component "gpx-point-reducer" as GpxPointReducer<<leaflet-plugin>>
+ component "google-oauth-js4web" as oauthAdapter<<JavaScript Library>>
+ component "google-drive-js4web" as driveAdapter<<JavaScript Library>>
+ 
+ leaflet -right-( Plugin
+ GpxPointReducer -left- Plugin
+ GpxPointReducer --> GpxPointReducer: reduce gpx points 
+ 
+ BrowserApp .up.> oauthAdapter : integrate into leaflet
+ BrowserApp .up.> driveAdapter : integrate into leaflet
+ BrowserApp ..> leaflet: use
+ BrowserApp ..> GpxPointReducer: use
+}
+
+cloud "Google Cloud Services" {
+ component "Google OAuth 2.0" as OAuth
+ component "Google Drive" as Drive {
+  file wormnav.file
+ }
+}
+
+cloud "Anywhere from local disk or web" {
+    file gpx.file
+}
+
+oauthAdapter -up-> OAuth: login
+driveAdapter -up-> wormnav.file: list|read|write|delete
+
+GpxPointReducer -down-> gpx.file: read | download
+
+@enduml
